@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+    <head>
+    <title>extension</title>
+    <style>
+      body {
+        min-width: 320px;
+        overflow-x: hidden;
+        text-align: center;
+      }
+      h1,p {
+        margin: 0;
+        padding: 0;
+        line-height: 1.5em;
+        padding: 10px; 
+      }
+      h1 {
+        font-size: 20px;
+        text-align: center;
+        font-weight: normal;
+        color: #1d1533; 
+      }
+      p {
+        font-size: 11px;
+        color: #ddd;
+        padding-top: 0;
+        color: #e0d9f6;
+      }
+      #uploadfile {
+          display: block;
+          outline: 0;
+          height: 32px;
+          width: 200px;
+          margin: 0 auto;
+      }
+      #uploadfile::before {
+        content: "Upload IMG File";
+        display: block;
+        color: #6e5ac0;
+        background: -webkit-linear-gradient(top, #f9f9f9, #efefef);
+        border: 1px solid #9b89e3;
+        padding: 8px 3px;
+        -webkit-user-select: none;
+        cursor: pointer;
+        text-shadow: 1px 1px #fff;
+        font-size: 14px;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+      }
+    </style>
+    </head>
+    <body>
+    <h1>Comparsion webpage & design</h1>
+    <p>Frances.Shih</p>
+    <input type="file" id="uploadfile"/>
+    <!-- JavaScript and HTML must be in separate files for security. -->
+    <script type="text/javascript" src="popup.js"></script>
+    </body>
+</html>
+

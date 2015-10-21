@@ -1,0 +1,31 @@
+{
+    "manifest_version": 2,
+    "name": "comparsion design",
+    "description": "This extention shows the differences between webpage and design",
+    "version": "0.0.1",
+    "icons": {
+        "16": "icon_16.png",
+        "48": "icon_48.png",
+        "128": "icon_128.png"
+    },
+    "browser_action": {
+        "default_icon": "icon.png",
+        "default_popup": "popup.html"
+    },
+    /*"background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    },*/
+    /*"content_scripts": [
+        {
+        "matches": ["*://*\/*"],
+        "js": ["contentscript.js"]
+        }
+    ],*/
+    "permissions": [
+        "activeTab",
+        "tabs",
+        "*://*/*"
+        /*"background"*/
+    ]
+}
