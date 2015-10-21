@@ -1,10 +1,20 @@
-console.log('plugin insert script 然并卵');
+console.log('@Frances plugin insert script 然并卵');
 
-chrome.extension.sendMessage({
-	from: "_imgfile"}, function (res) {
+var port = chrome.extension.connect({name: "compare_ready"});
+
+port.postMessage({
+	from: "_imgfile",
+	text: "waiting"
+});
+
+port.onMessage.addListener(function(res) {
   	if (res.from === '_imgfile_plugin' && res.data !== "") {
-  		
-  		document.body.style.background = 'url(' + res.data + ') center top no-repeat';
-  		
+  		document.querySelector('html').style.background = 'url(' + res.data + ') center top no-repeat';
+  		document.body.style.opacity = '0.3';
+  	} else {
+  		port.postMessage({
+			from: "_imgfile",
+			text: "waiting"
+		});
   	}
 });

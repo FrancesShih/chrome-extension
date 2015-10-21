@@ -1,5 +1,6 @@
 var file = '';
 var type = '';
+var data = '';
 var input;
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -13,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (type.indexOf('image') === -1 || type.indexOf('adobe') !== -1) {
                 console.log('error type');
             } else {
-                
+                imgdata(file);
                 chrome.tabs.executeScript({
                     file: "contentscript.js"
                 });
@@ -23,39 +24,56 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function imgdata (file, cb) {
-    var data = null;
     var img = new Image();
-        
         img.src = window.URL.createObjectURL(file);
 
-    //img.onload = function(){
+    img.onload = function(){
+        
+        document.body.appendChild(img);
+        
+        var imgnode = document.querySelector('img');
+        var nodewidth = getAttr(imgnode, 'width');
+        var nodeheight = getAttr(imgnode, 'height');
+        
+        document.body.removeChild(imgnode);
+
         var canvas = document.createElement('canvas');
-        canvas.width = 828;
-        canvas.height = 299;
+        canvas.width = nodewidth;
+        canvas.height = nodeheight;
 
         var ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0);
 
         var dataURL = canvas.toDataURL('image/png');
-        console.log(dataURL);
 
-        typeof cb === "function" && cb(dataURL);
-    //};
+        data = dataURL;
+    };
     
 }
 
-chrome.extension.onMessage.addListener(function (request, sender, sendResponse) {
-    if (request.from === '_imgfile'){
-        console.log('legal'); 
-        imgdata(file, function (data) {
-            sendResponse({
-                from: '_imgfile_plugin',
-                data: data
-            });
+function getAttr(obj, pro){
+    return document.defaultView.getComputedStyle(obj)[pro].replace('px','') >> 0;
+}
+
+
+chrome.extension.onConnect.addListener(function(port) {
+  
+  if (port.name === "compare_ready") {
+        port.onMessage.addListener(function(msg) {
+            if ( data !== ""){
+                port.postMessage({
+                    from: "_imgfile_plugin",
+                    data: data
+                });
+                data = "";
+            } else {
+                port.postMessage({
+                    from: "_imgfile_plugin",
+                    text: "wait..."
+                });
+            }
         });
-    } else {
-        console.log('illegal');
-    }
+  }
 });
 
 // function saveTabData(tab, data) {
